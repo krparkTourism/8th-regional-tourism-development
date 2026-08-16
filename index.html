@@ -30,12 +30,22 @@
         .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; }
+        
+        /* 네이버 지도 컨트롤/버튼이 다른 팝업창을 뚫고 나오는 현상 원천 차단 */
+        #map {
+            position: relative;
+            z-index: 1 !important;
+            isolation: isolate;
+        }
+        #map .nmap_control, #map .naver-map-control {
+            z-index: 10 !important;
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <!-- 상단 글로벌 네비게이션 -->
-    <header class="bg-govNavy text-white sticky top-0 z-50 shadow-lg border-b border-slate-700">
+    <!-- 상단 글로벌 네비게이션 (z-index: 40) -->
+    <header class="bg-govNavy text-white sticky top-0 z-40 shadow-lg border-b border-slate-700">
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6">
             <div class="flex justify-between items-center h-16">
                 <!-- 타이틀 -->
@@ -48,14 +58,14 @@
                             <span class="text-[11px] bg-blue-900/90 text-blue-300 font-semibold px-2 py-0.5 rounded border border-blue-700/50">제8차 권역별 관광개발계획 (2027~2031)</span>
                             <span class="text-[11px] text-amber-400 font-medium"><i class="fa-solid fa-circle-dot animate-pulse mr-1"></i>현장실사 대상지 선정 대권별 협의회</span>
                         </div>
-                        <h1 class="text-base sm:text-lg font-bold text-white tracking-tight">권역별 현장조사 대상지 선정회의</h1>
+                        <h1 class="text-base sm:text-lg font-bold text-white tracking-tight">권역별 현장조사 선정회의</h1>
                     </div>
                 </div>
 
                 <!-- 상단 컨트롤 버튼 -->
                 <div class="flex items-center space-x-3">
                     <div class="hidden lg:flex items-center bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 text-xs text-slate-300 gap-3">
-                        <span><i class="fa-solid fa-users text-blue-400 mr-1.5"></i>조정위원 · 문체부 · KCTI 연구진</span>
+                        <span><i class="fa-solid fa-users text-blue-400 mr-1.5"></i>조정위원 · 문체부 · KCTI 제8차 권역계획 연구진</span>
                         <span class="text-slate-600">|</span>
                         <span><i class="fa-solid fa-calendar-day text-blue-400 mr-1.5"></i><span id="header-date">2026. 8. 19.</span></span>
                     </div>
@@ -102,7 +112,7 @@
                         <span>Client ID: 0a9dh6il2x</span>
                     </div>
                 </div>
-                <div id="map" class="w-full flex-1 rounded-lg border border-slate-200 bg-slate-100 relative" style="min-height: 440px;"></div>
+                <div id="map" class="w-full flex-1 rounded-lg border border-slate-200 bg-slate-100" style="min-height: 440px;"></div>
             </div>
 
             <!-- 안건 카드 리스트 -->
@@ -150,7 +160,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
                                 <h5 class="font-bold text-xs text-blue-900 mb-1"><i class="fa-solid fa-circle-check text-blue-600 mr-1.5"></i>입지 적정성 및 실현 가능성 현장 검증</h5>
-                                <p class="text-xs text-slate-600 leading-relaxed">2-1차 시안에 제시된 신규 관광단지 및 주요 관광개발사업의 물리적 지형 여건, 접근로, 진입 동선 및 투자 실행력을 현지에서 직접 확인합니다.</p>
+                                <p class="text-xs text-slate-600 leading-relaxed">2-1차 시안에 제시된 신규 관광단지 및 주요 관광개발사업의 물리적 지형 여건, 접근로, 진입 동선 및 투자 실행력을 현지에서 직접 확인합니다[cite: 1, 2, 3, 4].</p>
                             </div>
                             <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
                                 <h5 class="font-bold text-xs text-blue-900 mb-1"><i class="fa-solid fa-circle-check text-blue-600 mr-1.5"></i>서면검토 보완 및 계획 타당성 제고</h5>
@@ -187,7 +197,7 @@
                         <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-lg flex items-center justify-between text-xs text-amber-900">
                             <div class="flex items-center gap-2">
                                 <i class="fa-solid fa-circle-info text-amber-600"></i>
-                                <span><strong>현장실사단 구성 원칙:</strong> 개별 사업별로 <strong>조정위원 최소 2~3명, 문화체육관광부, KCTI 연구진 2명</strong>로 합동 구성하여 추진[cite: 1, 2, 3, 4]</span>
+                                <span><strong>현장실사단 구성 원칙:</strong> 개별 사업별로 <strong>조정위원 최소 2~3명, 문화체육관광부, 제8차 연구진 2명</strong>로 합동 구성하여 추진[cite: 1, 2, 3, 4]</span>
                             </div>
                             <span class="font-semibold bg-amber-200/70 text-amber-900 px-2 py-0.5 rounded">지방비 전액 사업은 실사 대상 제외[cite: 1, 2, 3, 4]</span>
                         </div>
@@ -266,8 +276,8 @@
         </section>
     </main>
 
-    <!-- 상세 모달 (조감도/배치도 고화질 뷰어) -->
-    <div id="site-modal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <!-- 상세 모달 (조감도/배치도 고화질 뷰어, z-index: 9999로 최상위 고정) -->
+    <div id="site-modal" class="fixed inset-0 z-[9999] bg-slate-900/70 backdrop-blur-xs flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-150 flex flex-col max-h-[90vh]">
             <div class="bg-govNavy text-white px-6 py-4 flex justify-between items-center shrink-0">
                 <div class="flex items-center gap-2.5">
@@ -315,8 +325,8 @@
         </div>
     </div>
 
-    <!-- 조정위원 심의 결과 취합표 모달 -->
-    <div id="summary-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <!-- 조정위원 심의 결과 취합표 모달 (z-index: 9999로 최상위 고정) -->
+    <div id="summary-modal" class="fixed inset-0 z-[9999] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full overflow-hidden border border-slate-200">
             <div class="bg-govNavy text-white px-5 py-4 flex justify-between items-center">
                 <div class="flex items-center gap-2">
@@ -358,7 +368,7 @@
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
             <div>
                 <p class="font-semibold text-slate-300">제8차 권역별 관광개발계획(2027~2031) 광역 대권별 협의회</p>
-                <p class="text-slate-500 mt-0.5">문화체육관광부 · KCTI 제8차 권역계획 연구팀</p>
+                <p class="text-slate-500 mt-0.5">문화체육관광부 · KCTI 제8차 권역계획 연구진</p>
             </div>
             <div class="text-slate-500">
                 Naver Cloud Maps API Client ID: <code class="text-blue-400 bg-slate-800 px-1.5 py-0.5 rounded">0a9dh6il2x</code>
