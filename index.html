@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제8차 권역별 관광개발계획 현장실사 대상지 선정 대권별 협의회(8.19~21)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        govNavy: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome 아이콘 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 네이버 지도 API (Client ID: 0a9dh6il2x) -->
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=0a9dh6il2x"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- 상단 글로벌 네비게이션 -->
+    <header class="bg-govNavy text-white sticky top-0 z-50 shadow-lg border-b border-slate-700">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6">
+            <div class="flex justify-between items-center h-16">
+                <!-- 타이틀 -->
+                <div class="flex items-center space-x-3">
+                    <div class="p-2.5 bg-blue-600 rounded-lg shadow-md flex items-center justify-center">
+                        <i class="fa-solid fa-map-location-dot text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[11px] bg-blue-900/90 text-blue-300 font-semibold px-2 py-0.5 rounded border border-blue-700/50">제8차 권역별 관광개발계획 (2027~2031)</span>
+                            <span class="text-[11px] text-amber-400 font-medium"><i class="fa-solid fa-circle-dot animate-pulse mr-1"></i>현장실사 대상지 선정 대권별 협의회</span>
+                        </div>
+                        <h1 class="text-base sm:text-lg font-bold text-white tracking-tight">권역별 현장조사 신규 관광(단)지 선정회의</h1>
+                    </div>
+                </div>
+
+                <!-- 상단 컨트롤 버튼 -->
+                <div class="flex items-center space-x-3">
+                    <div class="hidden lg:flex items-center bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700 text-xs text-slate-300 gap-3">
+                        <span><i class="fa-solid fa-users text-blue-400 mr-1.5"></i>조정위원 · 문체부 · 연구진</span>
+                        <span class="text-slate-600">|</span>
+                        <span><i class="fa-solid fa-calendar-day text-blue-400 mr-1.5"></i><span id="header-date">2026. 8. 19.</span></span>
+                    </div>
+                    <button onclick="openReviewSummaryModal()" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow">
+                        <i class="fa-solid fa-clipboard-check"></i> 심의 결과 취합표
+                    </button>
+                </div>
+            </div>
+
+            <!-- 대권 탭 메뉴 -->
+            <div class="flex space-x-2 border-t border-slate-800/80 pt-1">
+                <button onclick="switchRegion('jungbu')" id="tab-jungbu" class="region-tab py-2.5 px-4 text-xs sm:text-sm font-semibold rounded-t-lg transition flex items-center gap-2 text-white bg-blue-700">
+                    <i class="fa-solid fa-location-dot"></i> 중부권 (8.19)
+                </button>
+                <button onclick="switchRegion('dongnam')" id="tab-dongnam" class="region-tab py-2.5 px-4 text-xs sm:text-sm font-medium text-slate-400 hover:text-white rounded-t-lg transition flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot"></i> 동남권 (8.20)
+                </button>
+                <button onclick="switchRegion('sudo_gangwon')" id="tab-sudo_gangwon" class="region-tab py-2.5 px-4 text-xs sm:text-sm font-medium text-slate-400 hover:text-white rounded-t-lg transition flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot"></i> 수도·강원권 (8.20)
+                </button>
+                <button onclick="switchRegion('honam')" id="tab-honam" class="region-tab py-2.5 px-4 text-xs sm:text-sm font-medium text-slate-400 hover:text-white rounded-t-lg transition flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot"></i> 호남권 (8.21)
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 대시보드 -->
+    <main class="max-w-[1600px] mx-auto px-4 sm:px-6 py-5 w-full flex-1 flex flex-col gap-6">
+
+        <!-- 지도 & 검토 대상 리스트 -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            <!-- 네이버 지도 -->
+            <div class="lg:col-span-7 bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col h-[520px]">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+                        <h2 class="text-sm font-bold text-slate-800">현장실사 검토 대상 공간 분포도</h2>
+                        <span id="map-target-count" class="text-xs bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">중부권 5개소</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-slate-500">
+                        <span class="inline-flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-800 inline-block"></span> 대상지 마커</span>
+                        <span class="text-slate-300">|</span>
+                        <span>Client ID: 0a9dh6il2x</span>
+                    </div>
+                </div>
+                <div id="map" class="w-full flex-1 rounded-lg border border-slate-200 bg-slate-100 relative"></div>
+            </div>
+
+            <!-- 안건 카드 리스트 -->
+            <div class="lg:col-span-5 bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col h-[520px]">
+                <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-100">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-list-check text-blue-600"></i> 현장실사 우선 검토대상(안)
+                        </h3>
+                        <p class="text-[11px] text-slate-500 mt-0.5">사업규모·특성·조정 필요성 검토 후 실사 여부 결정</p>
+                    </div>
+                    <span class="text-[11px] font-semibold text-slate-400">마커/카드 클릭 시 상세 모달</span>
+                </div>
+
+                <div id="site-card-container" class="flex-1 overflow-y-auto custom-scrollbar space-y-3 pr-1.5">
+                    <!-- JS 렌더링 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 하단 4대 챕터 탭 패널 -->
+        <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="flex border-b border-slate-200 bg-slate-50 px-4 overflow-x-auto custom-scrollbar">
+                <button onclick="switchChapter('ch1')" id="c-tab-ch1" class="chapter-tab-btn py-3.5 px-5 text-sm font-bold text-blue-700 bg-white border-b-2 border-blue-700 transition flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-gavel"></i> 제1장. 현장실사 대상 선정기준
+                </button>
+                <button onclick="switchChapter('ch2')" id="c-tab-ch2" class="chapter-tab-btn py-3.5 px-5 text-sm font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-folder-tree"></i> 제2장. 신규 관광(단)지 및 주요 개발사업 현황
+                </button>
+                <button onclick="switchChapter('ch3')" id="c-tab-ch3" class="chapter-tab-btn py-3.5 px-5 text-sm font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-table-list"></i> 제3장. 현장실사 검토 대상(안) 상세
+                </button>
+                <button onclick="switchChapter('ch4')" id="c-tab-ch4" class="chapter-tab-btn py-3.5 px-5 text-sm font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap">
+                    <i class="fa-solid fa-comments"></i> 조정위원 협의사항
+                </button>
+            </div>
+
+            <div class="p-6">
+                <!-- 제1장 -->
+                <div id="content-ch1" class="chapter-content space-y-6">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+                            <span class="w-1.5 h-4 bg-blue-600 rounded"></span> 󰊱 실사 목적
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                                <h5 class="font-bold text-xs text-blue-900 mb-1"><i class="fa-solid fa-circle-check text-blue-600 mr-1.5"></i>입지 적정성 및 실현 가능성 현장 검증</h5>
+                                <p class="text-xs text-slate-600 leading-relaxed">2-1차 시안에 제시된 신규 관광단지 및 주요 관광개발사업의 물리적 지형 여건, 접근로, 진입 동선 및 투자 실행력을 현지에서 직접 확인합니다.</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                                <h5 class="font-bold text-xs text-blue-900 mb-1"><i class="fa-solid fa-circle-check text-blue-600 mr-1.5"></i>서면검토 보완 및 계획 타당성 제고</h5>
+                                <p class="text-xs text-slate-600 leading-relaxed">서면상으로 확인하기 어려운 주변 관광자원과의 연계성 및 중복 개발 여부를 사전 점검하여 제8차 계획의 공간적 완결성을 확보합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+                            <span class="w-1.5 h-4 bg-blue-600 rounded"></span> 󰊲 현장실사 대상 및 3대 선정 기준
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <div class="text-xs font-bold text-blue-700 mb-1 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-scale-balanced"></i> 기준 1. 사업 규모
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">총사업비, 사업면적, 도입시설 규모 및 투자계획 등을 고려할 때 권역계획에 미치는 영향이 크거나 확인이 필요한 사업</p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <div class="text-xs font-bold text-blue-700 mb-1 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-map-pin"></i> 기준 2. 사업 특성
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">구체적인 개발입지가 제시되어 입지 여건, 주변 관광자원과의 연계성 및 사업 실현 가능성에 대한 확인이 필요한 사업</p>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <div class="text-xs font-bold text-blue-700 mb-1 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-arrows-split-up-and-left"></i> 기준 3. 조정 필요성
+                                </div>
+                                <p class="text-xs text-slate-600 leading-relaxed">서면검토만으로 판단이 어렵거나 검토의견 간 차이가 있어 사업계획의 보완·조정이 필요한 사업</p>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-lg flex items-center justify-between text-xs text-amber-900">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-circle-info text-amber-600"></i>
+                                <span><strong>현장실사단 구성 원칙:</strong> 개별 사업별로 <strong>조정위원 최소 2~3명, 한국문화관광연구원 2명, 문화체육관광부</strong>로 합동 구성하여 추진</span>
+                            </div>
+                            <span class="font-semibold bg-amber-200/70 text-amber-900 px-2 py-0.5 rounded">지방비 전액 사업은 실사 대상 제외</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 제2장 -->
+                <div id="content-ch2" class="chapter-content hidden space-y-5">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900" id="ch2-title-text">[중부권] 시·도별 전략사업 및 신규 관광단지 현황</h4>
+                            <p class="text-xs text-slate-500 mt-0.5">각 시·도 2-1차 시안에서 제출된 전략별 관광진흥 및 개발사업 전체 목록</p>
+                        </div>
+                    </div>
+                    <div id="ch2-accordion-container" class="space-y-4"></div>
+                </div>
+
+                <!-- 제3장 -->
+                <div id="content-ch3" class="chapter-content hidden space-y-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-900" id="ch3-table-title">[중부권] 현장실사 검토 대상(안) 목록</h4>
+                            <p class="text-xs text-slate-500 mt-0.5">※ 남부권·충청유교문화권·서부내륙권 광역관광개발사업은 KCTI 평가 대상이므로 본 실사에서 제외</p>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl shadow-xs">
+                        <table class="w-full text-xs text-left">
+                            <thead class="bg-slate-100 border-b border-slate-200 text-slate-700 uppercase font-bold">
+                                <tr>
+                                    <th class="px-3 py-3 w-16 text-center">시도</th>
+                                    <th class="px-4 py-3 w-48">사업명 및 유형</th>
+                                    <th class="px-4 py-3">사업 내용</th>
+                                    <th class="px-3 py-3 w-36">사업기간 / 사업비</th>
+                                    <th class="px-4 py-3 w-64">현장실사 검토 사유</th>
+                                    <th class="px-3 py-3 w-28 text-center">심의 판정</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ch3-full-tbody" class="divide-y divide-slate-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 조정위원 협의사항 -->
+                <div id="content-ch4" class="chapter-content hidden space-y-6">
+                    <div class="border-l-4 border-blue-600 pl-4 py-1">
+                        <h4 class="text-base font-bold text-slate-900">조정위원회 안건 협의 및 일정 조율 가이드</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">본 회의를 통해 현장실사 대상 사업을 확정하고 8월 말~9월 실사 일정을 수립합니다.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">1</span>
+                                <h5 class="font-bold text-sm text-slate-900">현장실사 대상지역 최종 선정</h5>
+                            </div>
+                            <ul class="text-xs text-slate-600 space-y-2 list-disc pl-5 leading-relaxed">
+                                <li>제시된 <strong>우선 검토대상(안)</strong>을 토대로 사업규모, 특성, 입지 적정성 및 실현 가능성을 종합 심의하여 실사 대상 최종 확정</li>
+                                <li>기 제시된 안건 외에 조정위원이 서면검토 중 추가 확인이 필요하다고 판단한 사업을 발의하여 실사 대상에 포함할지 여부 결정</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-5 bg-slate-50 rounded-xl border border-slate-200">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">2</span>
+                                <h5 class="font-bold text-sm text-slate-900">실사 일정 협의 및 위원 배정</h5>
+                            </div>
+                            <ul class="text-xs text-slate-600 space-y-2 list-disc pl-5 leading-relaxed">
+                                <li><strong>8월 말 ~ 9월 중</strong> 조정위원 참석 가능 일정을 확인하여 권역별 현지 실사 일정표 확정</li>
+                                <li>해당 사업 담당 조정위원을 우선 배정하고, 실사 대상이 없는 시·도 위원의 일정을 고려하여 사업별 2~3인 풀(Pool) 구성</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 상세 모달 (조감도 및 상세계획) -->
+    <div id="site-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-slate-200">
+            <div class="bg-slate-900 text-white px-5 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <span id="modal-type-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-600 text-white">소규모 관광단지</span>
+                    <h3 id="modal-title" class="text-base font-bold">대상지 명칭</h3>
+                </div>
+                <button onclick="closeSiteModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 max-h-[75vh] overflow-y-auto custom-scrollbar space-y-4">
+                <div id="modal-image-area" class="w-full bg-slate-100 rounded-lg overflow-hidden border border-slate-200 flex items-center justify-center min-h-[200px]"></div>
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="text-slate-500 block mb-0.5">위치</span>
+                        <span id="modal-location" class="font-bold text-slate-800">-</span>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                        <span class="text-slate-500 block mb-0.5">사업기간 및 총사업비</span>
+                        <span id="modal-budget" class="font-bold text-slate-800">-</span>
+                    </div>
+                </div>
+                <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200 text-xs">
+                    <span class="text-slate-500 block mb-1 font-semibold">사업 상세 내용</span>
+                    <p id="modal-desc" class="text-slate-700 leading-relaxed">-</p>
+                </div>
+                <div class="p-3.5 bg-amber-50 rounded-lg border border-amber-200 text-xs">
+                    <span class="text-amber-900 block mb-1 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 현장실사 검토 사유</span>
+                    <p id="modal-reason" class="text-amber-950 font-medium leading-relaxed">-</p>
+                </div>
+            </div>
+            <div class="bg-slate-50 px-5 py-3 border-t border-slate-200 flex justify-end">
+                <button onclick="closeSiteModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 조정위원 심의 결과 취합표 모달 -->
+    <div id="summary-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-3xl w-full overflow-hidden border border-slate-200">
+            <div class="bg-govNavy text-white px-5 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-list text-blue-400"></i>
+                    <h3 class="text-base font-bold">현장실사 대상지 선정 심의 현황 취합</h3>
+                </div>
+                <button onclick="closeReviewSummaryModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                <p class="text-xs text-slate-500 mb-3">각 권역별 현장실사 검토 대상의 심의 상태(선정/보류/제외) 현황입니다.</p>
+                <div class="border border-slate-200 rounded-lg overflow-hidden">
+                    <table class="w-full text-xs text-left">
+                        <thead class="bg-slate-100 border-b border-slate-200 text-slate-700 uppercase font-bold">
+                            <tr>
+                                <th class="px-3 py-2.5">권역</th>
+                                <th class="px-3 py-2.5">사업명</th>
+                                <th class="px-3 py-2.5 text-center">심의 판정</th>
+                                <th class="px-3 py-2.5">조정 의견 메모</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summary-table-body" class="divide-y divide-slate-200"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="bg-slate-50 px-5 py-3 border-t border-slate-200 flex justify-between items-center">
+                <span class="text-xs text-slate-500">심의 의견은 세션 동안 유지됩니다.</span>
+                <div class="flex gap-2">
+                    <button onclick="copySummaryToClipboard()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-xs font-semibold">
+                        <i class="fa-regular fa-copy mr-1"></i> 텍스트 복사
+                    </button>
+                    <button onclick="closeReviewSummaryModal()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded text-xs font-semibold">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="bg-govNavy text-slate-400 text-xs py-5 border-t border-slate-800 mt-auto">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div>
+                <p class="font-semibold text-slate-300">제8차 권역별 관광개발계획(2027~2031) 광역 대권별 협의회</p>
+                <p class="text-slate-500 mt-0.5">문화체육관광부 · 한국문화관광연구원 제8차 권역계획 연구팀</p>
+            </div>
+            <div class="text-slate-500">
+                Naver Cloud Maps API Client ID: <code class="text-blue-400 bg-slate-800 px-1.5 py-0.5 rounded">0a9dh6il2x</code>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 자바스크립트 데이터 및 인터랙션 -->
+    <script>
+        const appData = {
+            jungbu: {
+                name: "중부권",
+                date: "2026. 8. 19.(수)",
+                center: { lat: 36.65, lng: 127.5 },
+                zoom: 8,
+                sites: [
+                    {
+                        id: "jb-1",
+                        region: "대전",
+                        name: "보문산 수목원 조성",
+                        type: "대규모 개발사업",
+                        lat: 36.2975,
+                        lng: 127.4182,
+                        locationText: "대전광역시 중구 보문산 일원",
+                        budget: "2027~2029 / 1,324억원",
+                        desc: "방문자센터와 식물원 등 편의시설과 관람시설 등을 갖춘 친환경적 수목원 조성으로 시민의 여가와 관광객의 즐길거리 강화",
+                        reason: "전략별 관광개발 내 대규모 관광개발사업으로 개발입지 및 예산 투자의 타당성 현장 확인 필요",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "보문산 수목원 종합기본구상도"
+                    },
+                    {
+                        id: "jb-2",
+                        region: "충북(제천)",
+                        name: "청풍호반 익스트림파크",
+                        type: "소규모 관광단지",
+                        lat: 37.0057148,
+                        lng: 128.1481318,
+                        locationText: "제천시 청풍면 신리 산50-30 일원",
+                        budget: "기간 미제시 / 590억원 (민자 100%)",
+                        desc: "공공시설, 숙박시설, 상가시설, 운동·오락 등 5개 지구 조성(청풍호 경관과 산악지형을 활용한 체류형 레저거점)",
+                        reason: "소규모 관광단지 신규 지정에 따른 입지여건 및 개발계획 적정성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "청풍호반 익스트림파크 토지이용계획도"
+                    },
+                    {
+                        id: "jb-3",
+                        region: "충북(제천)",
+                        name: "천남 파크골프장",
+                        type: "소규모 관광단지",
+                        lat: 37.1145124,
+                        lng: 128.184114,
+                        locationText: "제천시 천남동 산22-2 일원",
+                        budget: "기간 미제시 / 291억원 (민자 100%)",
+                        desc: "숙박시설, 관광휴양·오락(파크골프장 54홀 등), 상가, 공공편익 시설 4개 지구 복합화",
+                        reason: "소규모 관광단지 조성에 따른 도입기능 적정성 및 민자 실현 가능성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "천남 파크골프장 시설배치계획도"
+                    },
+                    {
+                        id: "jb-4",
+                        region: "충북(단양)",
+                        name: "수양개 리조트",
+                        type: "소규모 관광단지",
+                        lat: 36.9638506,
+                        lng: 128.3329994,
+                        locationText: "단양군 적성면 애곡리 212-1 일원",
+                        budget: "기간 미제시 / 3,000억원 (민자 100%)",
+                        desc: "단양역과 수양개 관광권을 연계하여 호텔·리조트 등 관광숙박시설 중심 체류형 거점 조성",
+                        reason: "단양역-시루섬 연계 체류형 숙박 거점 조성에 따른 입지 및 규모 적정성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "수양개 리조트 및 시루섬 생태탐방교 조감도"
+                    },
+                    {
+                        id: "jb-5",
+                        region: "충남(청양)",
+                        name: "칠갑호 관광단지(체류형 리조트)",
+                        type: "신규 관광단지",
+                        lat: 36.4389,
+                        lng: 126.8485,
+                        locationText: "충청남도 청양군 대치면 칠갑호 일원",
+                        budget: "2026~2032 / 3,000억원 (민자 100%)",
+                        desc: "칠갑호 일원에 숙박시설을 중심으로 호수형 웰니스·패밀리 콘텐츠, 컨벤션·세미나 기능을 갖춘 체류형 복합 리조트 단지",
+                        reason: "체류형 리조트 계획에 따른 개발규모 및 호수변 입지 적정성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "칠갑호 관광단지 조감도"
+                    }
+                ],
+                devOverview: [
+                    {
+                        sido: "대전광역시",
+                        tag: "4대 추진전략",
+                        summary: "신규 관광(단)지 및 소규모 관광단지 해당 없음. 대규모 보문산 수목원 개발 제안.",
+                        projects: ["노루벌 지방(국가)정원 조성", "대전 야구특화거리 조성", "보문산 수목원 조성 (대규모)", "소제동 근대역사문화공간 조성", "구정리터널 명소화", "대청호 장미공원", "오월드 재창조", "효문화 뿌리마을", "온천지구 관광거점"]
+                    },
+                    {
+                        sido: "세종특별자치시",
+                        tag: "4대 추진전략",
+                        summary: "신규 관광(단)지 및 소규모 관광단지 해당 없음. 도심 명소화 및 듀얼 매력 육성.",
+                        projects: ["세종 아레나 조성", "나성 문화예술산업지구", "한솔동 백제고분 역사공원", "조치원 공연예술관광지구", "세종호수공원 고도화", "도심 숲속 힐링 테마파크", "전의초수 왕의 물 치유마을"]
+                    },
+                    {
+                        sido: "충청북도",
+                        tag: "4대 전략 (SPACE, CONTENTS, HUMAN, PLATFORM)",
+                        summary: "소규모 관광단지 3개소 신규 제안 (제천 2, 단양 1).",
+                        projects: ["(소규모) 제천 청풍호반 익스트림파크", "(소규모) 제천 천남 파크골프장", "(소규모) 단양 수양개 리조트", "온달 관광지 리뉴얼", "수옥정 물빛정원", "초정리조트 조성", "충주 웰니스클러스터"]
+                    },
+                    {
+                        sido: "충청남도",
+                        tag: "5대 전략 (해양레저, 오감힐링, 체류휴양, 융복합, 수용태세)",
+                        summary: "신규 관광단지 1개소 제안 (청양 칠갑호).",
+                        projects: ["(신규단지) 청양 칠갑호 관광단지", "당진 도비도-난지도 치유특구", "왜목마을 확대", "용연저수지 관광개발", "백제문화 복합단지", "계룡산 케이블카 조성"]
+                    }
+                ]
+            },
+            dongnam: {
+                name: "동남권",
+                date: "2026. 8. 20.(목)",
+                center: { lat: 35.6, lng: 128.8 },
+                zoom: 8,
+                sites: [
+                    {
+                        id: "dn-1",
+                        region: "부산(영도)",
+                        name: "영도 중리산 관광단지(가칭)",
+                        type: "신규 관광단지",
+                        lat: 35.068,
+                        lng: 129.062,
+                        locationText: "부산광역시 영도구 동삼동 일원",
+                        budget: "2026~2031 / 5,325억원",
+                        desc: "해양치유·웰니스 중심 체류형 관광단지 및 영도 중리산권 해양 관광벨트 조성",
+                        reason: "신규 관광단지 조성에 따른 입지 및 사업 실현 가능성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "영도 중리산권 관광벨트 마스터플랜"
+                    },
+                    {
+                        id: "dn-2",
+                        region: "부산(영도)",
+                        name: "영도 중리해변 배후지 관광단지(가칭)",
+                        type: "신규 관광단지",
+                        lat: 35.064,
+                        lng: 129.058,
+                        locationText: "부산광역시 영도구 동삼동 일원",
+                        budget: "2026~2031 / 사업비 산정중",
+                        desc: "중리해변 배후 부지를 활용한 체류·휴양형 해안 관광단지 조성",
+                        reason: "중리산 관광단지와 연계한 해안 입지 타당성 및 중복 개발 여부 검토 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "중리해변 배후지 개발계획안"
+                    },
+                    {
+                        id: "dn-3",
+                        region: "경북(울진)",
+                        name: "울진 오션리조트 관광단지",
+                        type: "신규 관광단지",
+                        lat: 36.953,
+                        lng: 129.408,
+                        locationText: "경북 울진군 근남면 산포리 697-4번지",
+                        budget: "2027~2030 / 4,602억원",
+                        desc: "호텔 17층, 연립형 콘도 15층, 단독형 풀빌라, 해수욕장 연결브릿지 등 체류형 거점",
+                        reason: "신규 관광단지 조성, 해안 입지 및 대규모 민자유치 실현 가능성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "울진 오션리조트 종합개발구상도"
+                    },
+                    {
+                        id: "dn-4",
+                        region: "경북(상주)",
+                        name: "상주 경천대 관광단지",
+                        type: "신규 관광단지",
+                        lat: 36.447,
+                        lng: 128.252,
+                        locationText: "경북 상주시 사벌국면 경천로 652",
+                        budget: "2026~2032 / 5,300억원",
+                        desc: "2,284,329㎡ 부지에 대규모 골프장, 숙박시설, 안전체험관, 신규휴양시설 결합 복합단지",
+                        reason: "초대규모 부지 지정에 따른 하천수변 환경영향 및 사업 실현 타당성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "상주 경천대 관광단지 토지이용계획도"
+                    },
+                    {
+                        id: "dn-5",
+                        region: "경남(함안)",
+                        name: "함안 아라가야 소규모 관광단지",
+                        type: "소규모 관광단지",
+                        lat: 35.281,
+                        lng: 128.406,
+                        locationText: "경남 함안군 가야읍 도항리 247-103(구 함안IC 부지)",
+                        budget: "2026~2030 / 사업비 검토중",
+                        desc: "폐고속도로 유휴부지를 활용하여 숙박시설, 공공시설, 상가, 광장 결합 체류형 거점 조성",
+                        reason: "소규모 관광단지 입지 적정성 및 유휴부지 활용 타당성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "함안 아라가야 소규모 관광단지 계획도"
+                    },
+                    {
+                        id: "dn-6",
+                        region: "경남(함안)",
+                        name: "악양 노을감성 소규모 관광단지",
+                        type: "소규모 관광단지",
+                        lat: 35.324,
+                        lng: 128.375,
+                        locationText: "경남 함안군 법수면 윤외리 110-19번지",
+                        budget: "2027~2031 / 556억원",
+                        desc: "처녀뱃사공 상징공간, 드론 테마파크, 사계절 에코가든 및 숙박·상가시설 조성",
+                        reason: "소규모 관광단지 지정 요건 및 도입 테마시설 적정성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "악양 노을감성 소규모 관광단지 구상도"
+                    },
+                    {
+                        id: "dn-7",
+                        region: "경남(남해)",
+                        name: "남해 평산 소규모 관광단지",
+                        type: "소규모 관광단지",
+                        lat: 34.773,
+                        lng: 127.854,
+                        locationText: "경남 남해군 남면 평산리 2205-1번지",
+                        budget: "2025~2029 / 2,505억원",
+                        desc: "남해안 절경을 활용한 고급 테라스형 콘도, 빌라, 해양마리나 결합 체류형 단지",
+                        reason: "소규모 관광단지 지정에 따른 해안 경관 보전 및 사업 실현성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "남해 평산 소규모 관광단지 조감도"
+                    }
+                ],
+                devOverview: [
+                    {
+                        sido: "부산광역시",
+                        tag: "11대 추진전략",
+                        summary: "영도구 일원 신규 관광단지 2개소 제안.",
+                        projects: ["(신규단지) 영도 중리산 관광단지", "(신규단지) 영도 중리해변 배후지", "회동호 생태힐링", "해운대수목원", "기장도예촌", "송정 해양레포츠 빌리지", "오시리아 정비"]
+                    },
+                    {
+                        sido: "대구광역시",
+                        tag: "5대 추진전략",
+                        summary: "신규 관광(단)지 없음. 돔구장, K-컬처 랜드마크 등 대규모 개발 제안.",
+                        projects: ["스포츠 공연 복합 돔구장 건설", "지자체 특화 K-컬처 랜드마크 구축", "의료관광 육성", "통합신공항 연계 에어투어리즘"]
+                    },
+                    {
+                        sido: "경상북도",
+                        tag: "개발 3대 / 진흥 3대 전략",
+                        summary: "신규 관광단지 2개소 제안 (울진, 상주).",
+                        projects: ["(신규단지) 울진 오션리조트", "(신규단지) 상주 경천대 관광단지", "K-베트남 밸리", "천생산 힐링단지", "호미반도 특화지구"]
+                    },
+                    {
+                        sido: "경상남도",
+                        tag: "4대 추진전략",
+                        summary: "신규 관광단지 1개소(통영 도산_사전협의 완), 소규모 3개소(함안 2, 남해 1).",
+                        projects: ["(신규단지) 통영 도산관광단지 (사전협의 완료)", "(소규모) 함안 아라가야", "(소규모) 함안 악양 노을감성", "(소규모) 남해 평산", "거제 포로수용소 리뉴얼", "합천운석충돌구 테마공원"]
+                    },
+                    {
+                        sido: "울산광역시",
+                        tag: "시안 미제출",
+                        summary: "2-1차 시안 미제출로 현장실사 대상 검토 보류.",
+                        projects: ["시안 미제출로 현장실사 검토 대상 보류"]
+                    }
+                ]
+            },
+            sudo_gangwon: {
+                name: "수도·강원권",
+                date: "2026. 8. 20.(목)",
+                center: { lat: 37.85, lng: 127.8 },
+                zoom: 8,
+                sites: [
+                    {
+                        id: "sg-1",
+                        region: "경기(포천)",
+                        name: "한탄강 복합 관광단지",
+                        type: "신규 관광단지",
+                        lat: 38.086,
+                        lng: 127.202,
+                        locationText: "경기도 포천시 영북면 대회산리 산37번지",
+                        budget: "2025~2035 / 3,854억원 (지방비 487억)",
+                        desc: "기반시설 약 14.2만㎡, 숙박시설 4.3만㎡, 지오월 테마공원, 한여울 복합문화공간, 리조트 등",
+                        reason: "대규모 신규 관광단지로 지질자원 보전과 개발 간 입지 및 사업 실현가능성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "포천 한탄강 복합 관광단지 마스터플랜"
+                    },
+                    {
+                        id: "sg-2",
+                        region: "강원(춘천)",
+                        name: "방하리 관광지",
+                        type: "신규 관광지",
+                        lat: 37.788,
+                        lng: 127.532,
+                        locationText: "강원 춘천시 남산면 방하리 281번지",
+                        budget: "2025~2032 / 740억원 (지방비 590억)",
+                        desc: "107,603㎡ 부지에 휴양·문화시설(미러폰드광장), 상가(엘리웨이), 숙박(풀빌라, 트리하우스) 조성",
+                        reason: "신규 관광지로 입지여건 및 개발계획 적정성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "춘천 방하리 관광지 마스터플랜"
+                    },
+                    {
+                        id: "sg-3",
+                        region: "강원(동해)",
+                        name: "한섬 관광지",
+                        type: "신규 관광지",
+                        lat: 37.525,
+                        lng: 129.118,
+                        locationText: "강원 동해시 동굴로 50 일원",
+                        budget: "2028~2032 / 3,034억원 (민자 2,987억)",
+                        desc: "가세해수욕장~고불개~천곡항~한섬해수욕장을 잇는 도심 해양 복합 관광지 신규 지정",
+                        reason: "도심 해안 관광지 신규 지정 및 민자 리조트 개발 적정성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "동해 한섬 관광지 구역도"
+                    },
+                    {
+                        id: "sg-4",
+                        region: "강원(고성)",
+                        name: "DMZ 생태평화 국가정원",
+                        type: "신규 관광지",
+                        lat: 38.583,
+                        lng: 128.375,
+                        locationText: "강원 고성군 현내면 명호리 2-23번지",
+                        budget: "2027~2030 / 2,500억원 (전액 국비)",
+                        desc: "통일전망대 일원 산림이용진흥지구 연계 7개 테마정원 조성",
+                        reason: "전액 국비 신규 관광지 지정에 따른 안보·생태 규제 완화 및 실현 타당성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "DMZ 생태평화 국가정원 구역도"
+                    },
+                    {
+                        id: "sg-5",
+                        region: "강원(고성)",
+                        name: "화진포 국가해양생태공원",
+                        type: "신규 관광지",
+                        lat: 38.484,
+                        lng: 128.435,
+                        locationText: "강원 고성군 현내면 초도리 99 일원",
+                        budget: "2024~2033 / 1,286억원 (국비 900억)",
+                        desc: "5.10㎢ 면적에 11개 생태정원과 4개 생태길이 어우러진 해양생태 거점 조성",
+                        reason: "석호 및 해양보호구역 보전형 신규 관광지 계획 적정성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "화진포 국가해양생태공원 종합구상도"
+                    },
+                    {
+                        id: "sg-6",
+                        region: "강원(고성)",
+                        name: "고성 해솔리아 관광단지",
+                        type: "신규 관광단지",
+                        lat: 38.398,
+                        lng: 128.482,
+                        locationText: "강원 고성군 거진읍 반암리 산14-5번지",
+                        budget: "2025~2035 / 5,000억원 (민자 100%)",
+                        desc: "2,438,308㎡ 부지에 27홀 골프장, 콘도미니엄, 관광호텔, 생활숙박시설 복합 단지",
+                        reason: "초대규모 산림 부지 개발에 따른 환경성 및 민자 실행 가능성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "고성 해솔리아 관광단지 토지이용계획도"
+                    },
+                    {
+                        id: "sg-7",
+                        region: "강원(양양)",
+                        name: "양양 오션파크 관광단지",
+                        type: "신규 관광단지",
+                        lat: 37.954,
+                        lng: 128.775,
+                        locationText: "강원 양양군 현남면 남애리 600-9 일원",
+                        budget: "2027~2036 / 1조 5,000억원 (민자 100%)",
+                        desc: "대중골프장, 해양정원, 수목원, 관광숙박시설 등 1.5조원 규모 복합단지",
+                        reason: "대규모 메가 관광단지로 입지 및 단계별 민자 투자 타당성 검증 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "양양 오션파크 관광단지 종합계획도"
+                    },
+                    {
+                        id: "sg-8",
+                        region: "강원(삼척)",
+                        name: "삼척 정라 소규모 관광단지",
+                        type: "소규모 관광단지",
+                        lat: 37.439,
+                        lng: 129.186,
+                        locationText: "강원 삼척시 정하동 1번지 일원",
+                        budget: "2025~2030 / 7,005억원 (민자 6,945억)",
+                        desc: "콘도미니엄, 풀빌라, 웰니스센터, 해안광장, 전망시설 등 체류형 단지",
+                        reason: "해안 절벽지대 입지 안전성 및 다양한 복합시설 실현 가능성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "삼척 정라 소규모 관광단지 배치도"
+                    },
+                    {
+                        id: "sg-9",
+                        region: "강원(영월)",
+                        name: "청령포 소규모 관광단지",
+                        type: "소규모 관광단지",
+                        lat: 37.172,
+                        lng: 128.455,
+                        locationText: "강원 영월군 영월읍 방절리 54 일원",
+                        budget: "2027~2030 / 450억원 (민자 250억)",
+                        desc: "청령포원(국가정원 예정지) 배후 숙박시설(호텔), 국가정원센터 및 편의시설",
+                        reason: "국가정원센터 등 연계 개발계획에 대한 입지 및 규모 적정성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "영월 청령포 소규모 관광단지 조성 예시도"
+                    },
+                    {
+                        id: "sg-10",
+                        region: "강원(고성)",
+                        name: "고성 맹죽청원 소규모 관광단지",
+                        type: "소규모 관광단지",
+                        lat: 38.381,
+                        lng: 128.455,
+                        locationText: "강원 고성군 간성읍 탑동리 산188-8번지",
+                        budget: "2025~2031 / 2,400억원 (민자 100%)",
+                        desc: "숙박 290객실, 스마트팜 온실카페, 대나무숲 테마파크, 전통정원 등",
+                        reason: "대규모 숙박시설 계획에 따른 개발규모 및 배후 입지 적정성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "고성 맹죽청원 소규모 관광단지 계획도"
+                    }
+                ],
+                devOverview: [
+                    {
+                        sido: "서울특별시",
+                        tag: "4대 추진전략",
+                        summary: "신규 관광(단)지 없음. 글로벌 고부가 및 상생 마케팅 중심.",
+                        projects: ["메가이벤트 관광전환", "프리미엄 미식 서울 브랜드화", "서울형 야간관광", "스마트 안내체계 고도화"]
+                    },
+                    {
+                        sido: "경기도",
+                        tag: "7대 추진전략",
+                        summary: "신규 관광단지 1개소 제안 (포천 한탄강).",
+                        projects: ["(신규단지) 포천 한탄강 복합 관광단지", "평택호관광단지", "화성국제테마파크", "고양 K-컬처밸리", "DMZ 농촌체험특화단지"]
+                    },
+                    {
+                        sido: "인천광역시",
+                        tag: "5대 추진전략",
+                        summary: "신규 관광(단)지 없음. 송도 허브 및 특구 활성화 중심.",
+                        projects: ["송도 글로벌 복합 문화허브", "영종국제관광특구", "월미관광특구", "서해 섬관광 강화"]
+                    },
+                    {
+                        sido: "강원특별자치도",
+                        tag: "9대 추진전략",
+                        summary: "신규 관광지 4개소, 관광단지 2개소, 소규모 3개소 제안 (최다).",
+                        projects: ["(관광지) 춘천 방하리", "(관광지) 동해 한섬", "(관광지) 고성 DMZ국가정원", "(관광지) 고성 화진포", "(관광단지) 고성 해솔리아", "(관광단지) 양양 오션파크", "(소규모) 삼척 정라", "(소규모) 영월 청령포", "(소규모) 고성 맹죽청원"]
+                    }
+                ]
+            },
+            honam: {
+                name: "호남권",
+                date: "2026. 8. 21.(금)",
+                center: { lat: 35.3, lng: 126.9 },
+                zoom: 8,
+                sites: [
+                    {
+                        id: "hn-1",
+                        region: "전북(임실)",
+                        name: "임실 운종지구 소규모 관광단지",
+                        type: "소규모 관광단지",
+                        lat: 35.6074188,
+                        lng: 127.1116427,
+                        locationText: "전북 임실군 운암면 운종리 295-43 일원",
+                        budget: "2026~2031 / 1,668억원",
+                        desc: "옥정호 수변 숙박시설, 전시체험시설 등 체류형 거점 구축",
+                        reason: "신규 소규모 관광단지 조성, 옥정호 수변 입지 및 사업 실현 가능성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "임실 운종지구 소규모 관광단지 대상지 위치도"
+                    },
+                    {
+                        id: "hn-2",
+                        region: "전북(고창)",
+                        name: "고창군 암치석산 소규모 관광단지",
+                        type: "소규모 관광단지",
+                        lat: 35.3480828,
+                        lng: 126.6429975,
+                        locationText: "전북 고창군 성송면 암치리 산81-3번지 일원",
+                        budget: "2026~2035 / 708억원",
+                        desc: "한국전통호텔, 캠핑장, 미디어아트, 수변공간 등 폐석산 부지 관광자원화",
+                        reason: "폐석산 유휴부지 활용에 따른 안전성 및 관광단지 지정 적정성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "고창군 암치석산 현장 구역도"
+                    },
+                    {
+                        id: "hn-3",
+                        region: "전북(전주)",
+                        name: "전주 아중호수 관광지",
+                        type: "신규 관광지",
+                        lat: 35.8219604,
+                        lng: 127.1773776,
+                        locationText: "전북 전주시 덕진구 우아동1가 일원",
+                        budget: "2027~2032 / 490억원",
+                        desc: "플로팅 수상복합문화센터, 후백제소리 출렁다리, 3D 워터스크린, 수상무대 등",
+                        reason: "신규 관광지 조성, 도심형 호수공원의 관광지 지정 요건 및 입지 타당성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "전주 아중호수 관광지 종합구상도"
+                    },
+                    {
+                        id: "hn-4",
+                        region: "전북(고창)",
+                        name: "고창 명사십리 관광지",
+                        type: "신규 관광지",
+                        lat: 35.4694952,
+                        lng: 126.4535867,
+                        locationText: "전북 고창군 상하면·해리면 일원",
+                        budget: "2024~2030 / 9,000억원",
+                        desc: "해양경관·갯벌 생태자원 활용 대규모 체험형 관광단지 조성",
+                        reason: "9,000억원대 대규모 개발계획 대비 민자유치 구조 및 해안생태 타당성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "고창 명사십리 관광지 광역 입지도"
+                    },
+                    {
+                        id: "hn-5",
+                        region: "전남(고흥)",
+                        name: "고흥 해양 예술랜드 관광단지",
+                        type: "신규 관광단지",
+                        lat: 34.5829812,
+                        lng: 127.4484142,
+                        locationText: "전남 고흥군 영남면 금사리 산144-1 일원",
+                        budget: "2025~2030 / 5,063억원",
+                        desc: "도서 해양자원을 활용한 타워형 숙박, 골프장, 힐링 복합관광단지 조성",
+                        reason: "신규 관광단지 조성, 도서 연계 인프라 및 입지 실현 가능성 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "고흥 해양 예술랜드 관광단지 3D 조감도"
+                    },
+                    {
+                        id: "hn-6",
+                        region: "전남(신안)",
+                        name: "신안 자은 해양관광단지",
+                        type: "신규 관광단지",
+                        lat: 34.8500035,
+                        lng: 126.0395922,
+                        locationText: "전남 신안군 자은면 유각리 산239번지 일원",
+                        budget: "2020~2030 / 7,066억원",
+                        desc: "자은서부 해안축 중심 해양레포츠 및 문화예술 복합단지 조성",
+                        reason: "신규 관광단지 조성, 기존 마리포사 리조트 연계성 및 도로교통 수용력 확인 必",
+                        status: "선정",
+                        memo: "",
+                        imagePlaceholder: "신안 자은 해양관광단지 진입도로 및 사업지 구역도"
+                    }
+                ],
+                devOverview: [
+                    {
+                        sido: "전북특별자치도",
+                        tag: "개발 5대 / 진흥 1대 전략",
+                        summary: "신규 관광지 2개소(전주, 고창), 소규모 2개소(임실, 고창) 제안.",
+                        projects: ["(관광지) 전주 아중호수", "(관광지) 고창 명사십리", "(소규모) 임실 운종지구", "(소규모) 고창 암치석산", "장수 대곡제 체류단지", "남원 지리산 산악관광벨트"]
+                    },
+                    {
+                        sido: "전라남도",
+                        tag: "4대 추진전략",
+                        summary: "신규 관광단지 2개소(고흥, 신안) 제안.",
+                        projects: ["(신규단지) 고흥 해양 예술랜드", "(신규단지) 신안 자은 해양관광단지", "나주 영산포 3경", "영암 치유관광단지", "여수 해상택시 시범노선"]
+                    },
+                    {
+                        sido: "광주광역시",
+                        tag: "시안 미제출",
+                        summary: "2-1차 시안 미제출로 현장실사 대상 검토 보류.",
+                        projects: ["시안 미제출로 현장실사 검토 대상 보류"]
+                    }
+                ]
+            }
+        };
+
+        let currentRegion = 'jungbu';
+        let map = null;
+        let mapMarkers = [];
+        let mapInfoWindows = [];
+
+        function initNaverMap() {
+            const data = appData[currentRegion];
+            const mapContainer = document.getElementById('map');
+            const mapOptions = {
+                center: new naver.maps.LatLng(data.center.lat, data.center.lng),
+                zoom: data.zoom,
+                minZoom: 6,
+                maxZoom: 18,
+                zoomControl: true,
+                zoomControlOptions: {
+                    position: naver.maps.Position.TOP_RIGHT
+                }
+            };
+            map = new naver.maps.Map(mapContainer, mapOptions);
+            drawMarkers();
+        }
+
+        function drawMarkers() {
+            mapMarkers.forEach(m => m.setMap(null));
+            mapMarkers = [];
+            mapInfoWindows = [];
+
+            const data = appData[currentRegion];
+
+            data.sites.forEach((site, index) => {
+                const markerPos = new naver.maps.LatLng(site.lat, site.lng);
+                
+                const marker = new naver.maps.Marker({
+                    position: markerPos,
+                    map: map,
+                    title: site.name,
+                    icon: {
+                        content: `
+                            <div class="cursor-pointer group flex flex-col items-center">
+                                <div class="bg-blue-800 text-white font-bold text-[11px] px-2 py-1 rounded shadow-md border-2 border-white flex items-center gap-1 group-hover:bg-red-600 transition-colors">
+                                    <span class="w-4 h-4 rounded-full bg-white text-blue-900 flex items-center justify-center text-[9px] font-extrabold">${index + 1}</span>
+                                    <span>${site.name}</span>
+                                </div>
+                                <div class="w-0 h-0 border-l-[4px] border-l-transparent border-r-[4px] border-r-transparent border-t-[6px] border-t-blue-800"></div>
+                            </div>
+                        `,
+                        anchor: new naver.maps.Point(45, 30)
+                    }
+                });
+
+                const infoWindow = new naver.maps.InfoWindow({
+                    content: `
+                        <div class="p-3 max-w-xs text-xs font-sans">
+                            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800">${site.type}</span>
+                            <h4 class="font-bold text-slate-900 mt-1 text-xs">[${site.region}] ${site.name}</h4>
+                            <p class="text-slate-600 mt-1 text-[11px] leading-tight">${site.desc}</p>
+                            <div class="mt-2 pt-2 border-t border-slate-100 flex justify-between items-center text-[10px]">
+                                <span class="text-slate-500">${site.budget}</span>
+                                <button onclick="openSiteModal('${site.id}')" class="text-blue-600 font-bold hover:underline">상세도면 &rarr;</button>
+                            </div>
+                        </div>
+                    `,
+                    borderColor: "#94a3b8",
+                    borderWidth: 1,
+                    anchorSkew: true
+                });
+
+                naver.maps.Event.addListener(marker, 'click', () => {
+                    mapInfoWindows.forEach(iw => iw.close());
+                    infoWindow.open(map, marker);
+                    highlightCard(site.id);
+                });
+
+                mapMarkers.push(marker);
+                mapInfoWindows.push(infoWindow);
+            });
+        }
+
+        function switchRegion(regionKey) {
+            currentRegion = regionKey;
+            const data = appData[regionKey];
+
+            document.querySelectorAll('.region-tab').forEach(t => {
+                t.className = "region-tab py-2.5 px-4 text-xs sm:text-sm font-medium text-slate-400 hover:text-white rounded-t-lg transition flex items-center gap-2";
+            });
+            const activeTab = document.getElementById(`tab-${regionKey}`);
+            activeTab.className = "region-tab py-2.5 px-4 text-xs sm:text-sm font-semibold rounded-t-lg transition flex items-center gap-2 text-white bg-blue-700";
+
+            document.getElementById('header-date').textContent = data.date;
+            document.getElementById('map-target-count').textContent = `${data.name} ${data.sites.length}개소`;
+
+            if (map) {
+                map.setCenter(new naver.maps.LatLng(data.center.lat, data.center.lng));
+                map.setZoom(data.zoom);
+                drawMarkers();
+            }
+
+            renderSiteCards();
+            renderChapter2();
+            renderChapter3();
+        }
+
+        function switchChapter(chId) {
+            document.querySelectorAll('.chapter-content').forEach(c => c.classList.add('hidden'));
+            document.querySelectorAll('.chapter-tab-btn').forEach(b => {
+                b.className = "chapter-tab-btn py-3.5 px-5 text-sm font-medium text-slate-500 border-b-2 border-transparent hover:text-slate-800 transition flex items-center gap-2 whitespace-nowrap";
+            });
+
+            document.getElementById(`content-${chId}`).classList.remove('hidden');
+            const targetBtn = document.getElementById(`c-tab-${chId}`);
+            targetBtn.className = "chapter-tab-btn py-3.5 px-5 text-sm font-bold text-blue-700 bg-white border-b-2 border-blue-700 transition flex items-center gap-2 whitespace-nowrap";
+        }
+
+        function renderSiteCards() {
+            const data = appData[currentRegion];
+            const container = document.getElementById('site-card-container');
+            container.innerHTML = '';
+
+            if (data.sites.length === 0) {
+                container.innerHTML = `<div class="p-8 text-center text-slate-400 text-xs">검토 대상 사업이 없습니다.</div>`;
+                return;
+            }
+
+            data.sites.forEach((site, index) => {
+                const card = document.createElement('div');
+                card.id = `card-${site.id}`;
+                card.className = "p-3.5 rounded-xl border border-slate-200 bg-white hover:border-blue-500 hover:shadow-sm transition cursor-pointer text-xs";
+                
+                card.onclick = () => {
+                    if (map && mapMarkers[index]) {
+                        map.setCenter(mapMarkers[index].getPosition());
+                        map.setZoom(14);
+                        mapInfoWindows.forEach(iw => iw.close());
+                        mapInfoWindows[index].open(map, mapMarkers[index]);
+                        highlightCard(site.id);
+                    }
+                };
+
+                let badgeColor = site.type.includes('소규모') ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : (site.type.includes('신규') ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200');
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-1.5">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-5 h-5 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] font-bold">${index + 1}</span>
+                            <h4 class="font-bold text-slate-900 text-xs">[${site.region}] ${site.name}</h4>
+                        </div>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-semibold border ${badgeColor}">${site.type}</span>
+                    </div>
+                    <p class="text-slate-600 line-clamp-2 text-[11px] leading-relaxed mb-2">${site.desc}</p>
+                    <div class="p-2 bg-amber-50/70 border border-amber-200/70 rounded text-[11px] text-amber-900 mb-2.5">
+                        <strong>검토사유:</strong> ${site.reason}
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-100 text-[11px]">
+                        <span class="text-slate-500"><i class="fa-solid fa-won-sign mr-1 text-slate-400"></i>${site.budget}</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="event.stopPropagation(); openSiteModal('${site.id}')" class="text-blue-600 hover:text-blue-800 font-semibold flex items-center gap-1">
+                                <i class="fa-solid fa-image"></i> 도면보기
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderChapter2() {
+            const data = appData[currentRegion];
+            document.getElementById('ch2-title-text').textContent = `[${data.name}] 시·도별 전략사업 및 신규 관광단지 현황`;
+            const container = document.getElementById('ch2-accordion-container');
+            container.innerHTML = '';
+
+            data.devOverview.forEach(item => {
+                const box = document.createElement('div');
+                box.className = "border border-slate-200 rounded-xl p-4 bg-slate-50";
+
+                let projectTags = item.projects.map(p => `
+                    <span class="inline-flex items-center px-2.5 py-1 rounded text-xs bg-white border border-slate-200 text-slate-700 font-medium mr-1.5 mb-1.5 shadow-2xs">
+                        ${p.includes('(관광단지)') || p.includes('(소규모)') || p.includes('(신규단지)') ? '<strong class="text-blue-700 mr-1">' + p + '</strong>' : p}
+                    </span>
+                `).join('');
+
+                box.innerHTML = `
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-sm text-slate-900">${item.sido}</span>
+                            <span class="text-[11px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded font-semibold">${item.tag}</span>
+                        </div>
+                        <span class="text-xs text-slate-600">${item.summary}</span>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-slate-200">
+                        <div class="flex flex-wrap">${projectTags}</div>
+                    </div>
+                `;
+                container.appendChild(box);
+            });
+        }
+
+        function renderChapter3() {
+            const data = appData[currentRegion];
+            document.getElementById('ch3-table-title').textContent = `[${data.name}] 현장실사 검토 대상(안) 총 ${data.sites.length}개소`;
+            const tbody = document.getElementById('ch3-full-tbody');
+            tbody.innerHTML = '';
+
+            if (data.sites.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">현장실사 검토 대상 사업이 없습니다.</td></tr>`;
+                return;
+            }
+
+            data.sites.forEach((site, idx) => {
+                const tr = document.createElement('tr');
+                tr.id = `row-${site.id}`;
+                tr.className = "hover:bg-slate-50 transition";
+
+                tr.innerHTML = `
+                    <td class="px-3 py-3 text-center font-semibold text-slate-700">${site.region}</td>
+                    <td class="px-4 py-3">
+                        <span class="font-bold text-slate-900 block text-xs">${idx + 1}. ${site.name}</span>
+                        <span class="text-[10px] text-blue-700 bg-blue-50 px-1.5 py-0.2 rounded border border-blue-200 font-medium inline-block mt-0.5">${site.type}</span>
+                    </td>
+                    <td class="px-4 py-3 text-slate-600 text-xs leading-relaxed max-w-sm">${site.desc}</td>
+                    <td class="px-3 py-3 text-xs text-slate-800 font-medium">${site.budget}</td>
+                    <td class="px-4 py-3 text-xs">
+                        <div class="bg-amber-50 border border-amber-200 text-amber-900 p-2 rounded leading-tight">
+                            ${site.reason}
+                        </div>
+                    </td>
+                    <td class="px-3 py-3 text-center">
+                        <select onchange="updateDecision('${site.id}', this.value)" class="text-xs border border-slate-300 rounded px-2 py-1 bg-white font-semibold ${site.status === '선정' ? 'text-blue-700' : (site.status === '제외' ? 'text-red-600' : 'text-amber-600')}">
+                            <option value="선정" ${site.status === '선정' ? 'selected' : ''}>실사 선정</option>
+                            <option value="보류" ${site.status === '보류' ? 'selected' : ''}>추후 보류</option>
+                            <option value="제외" ${site.status === '제외' ? 'selected' : ''}>실사 제외</option>
+                        </select>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function highlightCard(siteId) {
+            document.querySelectorAll('#site-card-container > div').forEach(c => c.classList.remove('border-blue-600', 'bg-blue-50/40'));
+            const activeCard = document.getElementById(`card-${siteId}`);
+            if (activeCard) {
+                activeCard.classList.add('border-blue-600', 'bg-blue-50/40');
+                activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function openSiteModal(siteId) {
+            let foundSite = null;
+            Object.values(appData).forEach(reg => {
+                const s = reg.sites.find(item => item.id === siteId);
+                if (s) foundSite = s;
+            });
+
+            if (!foundSite) return;
+
+            document.getElementById('modal-title').textContent = foundSite.name;
+            document.getElementById('modal-type-badge').textContent = foundSite.type;
+            document.getElementById('modal-location').textContent = foundSite.locationText;
+            document.getElementById('modal-budget').textContent = foundSite.budget;
+            document.getElementById('modal-desc').textContent = foundSite.desc;
+            document.getElementById('modal-reason').textContent = foundSite.reason;
+
+            const imgArea = document.getElementById('modal-image-area');
+            imgArea.innerHTML = `
+                <div class="text-center p-8">
+                    <i class="fa-solid fa-map text-3xl text-slate-400 mb-2"></i>
+                    <p class="text-xs font-bold text-slate-700">${foundSite.imagePlaceholder}</p>
+                    <p class="text-[11px] text-slate-500 mt-1">지자체 2-1차 시안 첨부 도면 및 시설배치도</p>
+                </div>
+            `;
+
+            document.getElementById('site-modal').classList.remove('hidden');
+        }
+
+        function closeSiteModal() {
+            document.getElementById('site-modal').classList.add('hidden');
+        }
+
+        function openReviewSummaryModal() {
+            const tbody = document.getElementById('summary-table-body');
+            tbody.innerHTML = '';
+
+            Object.entries(appData).forEach(([key, reg]) => {
+                reg.sites.forEach(site => {
+                    const tr = document.createElement('tr');
+                    let statusBadge = site.status === '선정' ? '<span class="text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200 font-bold">선정</span>' : (site.status === '제외' ? '<span class="text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200 font-bold">제외</span>' : '<span class="text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 font-bold">보류</span>');
+
+                    tr.innerHTML = `
+                        <td class="px-3 py-2 font-medium text-slate-600">${reg.name}</td>
+                        <td class="px-3 py-2 font-bold text-slate-900">${site.name}</td>
+                        <td class="px-3 py-2 text-center">${statusBadge}</td>
+                        <td class="px-3 py-2">
+                            <input type="text" value="${site.memo}" onchange="updateMemo('${site.id}', this.value)" placeholder="의견 입력..." class="w-full text-xs border border-slate-200 rounded px-2 py-1 focus:border-blue-500">
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+
+            document.getElementById('summary-modal').classList.remove('hidden');
+        }
+
+        function closeReviewSummaryModal() {
+            document.getElementById('summary-modal').classList.add('hidden');
+        }
+
+        function updateDecision(siteId, newStatus) {
+            Object.values(appData).forEach(reg => {
+                const s = reg.sites.find(item => item.id === siteId);
+                if (s) s.status = newStatus;
+            });
+            renderChapter3();
+        }
+
+        function updateMemo(siteId, newMemo) {
+            Object.values(appData).forEach(reg => {
+                const s = reg.sites.find(item => item.id === siteId);
+                if (s) s.memo = newMemo;
+            });
+        }
+
+        function copySummaryToClipboard() {
+            let text = "【 제8차 권역별 관광개발계획 현장실사 심의 현황 】\n\n";
+            Object.entries(appData).forEach(([key, reg]) => {
+                text += `■ ${reg.name} (${reg.date})\n`;
+                reg.sites.forEach((s, i) => {
+                    text += `${i+1}. [${s.region}] ${s.name} | 판정: ${s.status} | 사유: ${s.reason} ${s.memo ? '| 의견: ' + s.memo : ''}\n`;
+                });
+                text += "\n";
+            });
+            navigator.clipboard.writeText(text).then(() => {
+                alert("심의 결과가 클립보드에 복사되었습니다. 보고서 및 회의록에 바로 붙여넣기 하실 수 있습니다.");
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initNaverMap();
+            renderSiteCards();
+            renderChapter2();
+            renderChapter3();
+        });
+    </script>
+</body>
+</html>
